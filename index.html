@@ -232,6 +232,52 @@ body.locked header, body.locked main { display: none; }
   .st-row .st-acts { grid-column: 1 / -1; justify-content: flex-start; }
 }
 @media (max-width: 640px) { .me .mn { display: none; } .me > button { padding: 4px; } }
+
+/* Activity log */
+.act-btn { flex: none; display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 10px; text-decoration: none;
+  color: var(--text); font-weight: 700; font-size: 13px; border: 1px solid var(--line); background: var(--panel2); }
+.act-btn svg { width: 17px; height: 17px; color: var(--gold); }
+.act-btn:hover, .act-btn[aria-current="page"] { border-color: var(--gold); }
+#activity { position: absolute; inset: 0; overflow: auto; padding: 28px 16px 56px; }
+#activity[hidden] { display: none; }
+.ac-notice { display: flex; gap: 12px; align-items: flex-start; background: #10233a; border: 1px solid #234a72; color: #cfe3fa; border-radius: 12px;
+  padding: 12px 14px; font-size: 14px; margin-bottom: 16px; }
+.ac-notice svg { width: 22px; height: 22px; flex: none; color: #7cc0ff; margin-top: 1px; }
+.ac-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ac-grid .ac-wide { grid-column: 1 / -1; }
+.fld textarea { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; resize: vertical; }
+.fld textarea:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.fld[hidden] { display: none; }
+.ac-filters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 12px; margin-bottom: 8px; }
+.ac-h { font-size: 16px; margin: 18px 0 10px; }
+.ac-table-wrap { overflow-x: auto; }
+.ac-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+.ac-table th, .ac-table td { padding: 11px 14px; border-top: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.ac-table thead th { border-top: 0; color: var(--mute); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.ac-table td.n, .ac-table th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.ac-table .warn { color: #f2d58a; }
+.ac-map { height: 380px; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--panel); display: grid; place-items: center; }
+.ac-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 13px 16px; border-top: 1px solid var(--line); }
+.ac-entry:first-child { border-top: 0; }
+.ac-entry .t { font-weight: 700; }
+.ac-entry .m { color: var(--mute); font-size: 13px; }
+.ac-entry .nt { color: #c4cbd8; font-size: 14px; grid-column: 1 / -1; white-space: pre-wrap; }
+.ac-entry .r { text-align: right; display: flex; gap: 6px; align-items: flex-start; justify-content: flex-end; flex-wrap: wrap; }
+.ac-entry a.loc { color: #7cc0ff; font-size: 13px; font-weight: 700; text-decoration: none; }
+.mgr-edit { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: end;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px; }
+.mgr-edit[hidden] { display: none; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.seg[hidden] { display: none; }
+.seg button { border: 0; background: var(--panel); color: var(--mute); padding: 9px 16px; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; min-height: 40px; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--gold); color: var(--goldink); }
+.leaflet-popup-content { font: 13px/1.4 system-ui, sans-serif; }
+@media (max-width: 760px) {
+  .ac-grid, .ac-filters, .mgr-edit { grid-template-columns: minmax(0, 1fr); }
+  .ac-map { height: 300px; }
+}
+@media (max-width: 640px) { .act-btn span { display: none; } .act-btn { padding: 0 9px; } }
 </style>
 </head>
 <body class="locked">
@@ -256,8 +302,9 @@ body.locked header, body.locked main { display: none; }
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5"/></svg>
     <span>TEMPLATE<span class="lbl2"> APPS</span></span>
   </a>
+  <a class="act-btn" id="actBtn" href="#activity" title="Log your visits and activities"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18s-5.5-5.2-5.5-9.3a5.5 5.5 0 0111 0C15.5 12.8 10 18 10 18z"/><circle cx="10" cy="8.6" r="2"/></svg><span>Activity</span></a>
   <div class="me" id="me"><button type="button" id="meBtn" aria-haspopup="true" aria-expanded="false"><span class="av" id="meAv">?</span><span class="mn" id="meName"></span></button>
-    <div class="menu" id="meMenu" hidden><div class="who" id="meWho"></div><a href="#staff" id="meStaff" hidden>Manage staff</a><a href="#">All tools</a><button type="button" id="meOut">Sign out</button></div></div>
+    <div class="menu" id="meMenu" hidden><div class="who" id="meWho"></div><a href="#activity">Activity log</a><a href="#staff" id="meStaff" hidden>Manage staff</a><a href="#">All tools</a><button type="button" id="meOut">Sign out</button></div></div>
 </header>
 
 <main>
@@ -303,6 +350,49 @@ body.locked header, body.locked main { display: none; }
         <p class="gnote" style="text-align:left;margin-top:10px">If the person already has a NYANSATEK login (for PeopleDesk or School), they keep their existing password and the starting password is ignored.</p>
       </form>
       <div class="st-list" id="stList"><div class="st-row"><span class="muted">Loading&hellip;</span></div></div>
+      <datalist id="teamList"></datalist>
+    </div>
+  </section>
+  <section id="activity" hidden aria-labelledby="acT">
+    <div class="st-wrap">
+      <div class="st-head"><div><h1 id="acT">Activity log</h1><p>Log each visit, call or task as you do it, so your manager can see your work.</p></div>
+        <div class="seg" id="acTabs" role="tablist" hidden><button type="button" role="tab" data-tab="mine" aria-pressed="true">My log</button><button type="button" role="tab" data-tab="team" aria-pressed="false">Team</button></div></div>
+      <div class="ac-notice"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18s-5.5-5.2-5.5-9.3a5.5 5.5 0 0111 0C15.5 12.8 10 18 10 18z"/><circle cx="10" cy="8.6" r="2"/></svg>
+        <div><b>Your location is saved with each log.</b> When you press <i>Log activity</i>, your phone shares where you are at that moment. Nothing is tracked between logs. You, your manager and the owner can see your logs.</div></div>
+      <div class="st-msg" id="acMsg" role="status" hidden></div>
+
+      <div id="acMine">
+        <form class="st-add" id="acForm">
+          <h2>Log an activity</h2>
+          <div class="ac-grid">
+            <label class="fld"><span>What did you do?</span><select name="activity_type" required>
+              <option value="client_visit">Client visit</option><option value="sales_call">Sales call</option><option value="flyer_distribution">Flyer or material distribution</option>
+              <option value="event">Event or activation</option><option value="meeting">Meeting</option><option value="delivery">Delivery</option>
+              <option value="training">Training</option><option value="office_work">Office work</option><option value="other">Other</option></select></label>
+            <label class="fld"><span>Client or place</span><input name="place" required maxlength="200" placeholder="For example Kejetia Market, Kumasi"></label>
+            <label class="fld"><span>Outcome</span><select name="outcome"><option value="">No outcome yet</option><option value="sale">Made a sale</option><option value="interested">Interested</option><option value="follow_up">Needs a follow-up</option><option value="not_interested">Not interested</option><option value="info_only">Information only</option></select></label>
+            <label class="fld" id="acAmt" hidden><span>Sale amount (GH&#8373;)</span><input name="amount" type="number" min="0" step="0.01" inputmode="decimal"></label>
+            <label class="fld ac-wide"><span>Notes</span><textarea name="notes" rows="3" maxlength="2000" placeholder="Who you met, what was agreed, next step"></textarea></label>
+          </div>
+          <button class="btnp" id="acBtn" type="submit" style="max-width:240px">Log activity</button>
+        </form>
+        <div class="st-list" id="acMineList"><div class="st-row"><span class="muted">Loading&hellip;</span></div></div>
+      </div>
+
+      <div id="acTeam" hidden>
+        <div class="ac-filters">
+          <label class="fld"><span>Period</span><select id="acPeriod"><option value="1">Today</option><option value="7" selected>Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></label>
+          <label class="fld"><span>Team</span><select id="acTeamSel"><option value="">All teams</option></select></label>
+          <label class="fld"><span>Person</span><select id="acPerson"><option value="">Everyone</option></select></label>
+          <button class="sbtn" type="button" id="acCsv" style="align-self:end;min-height:44px">Download CSV</button>
+        </div>
+        <h2 class="ac-h">Performance</h2>
+        <div class="st-list ac-table-wrap"><table class="ac-table" id="acSummary"></table></div>
+        <h2 class="ac-h">Map</h2>
+        <div id="acMap" class="ac-map"><div class="gnote">Loading map&hellip;</div></div>
+        <h2 class="ac-h">All activity</h2>
+        <div class="st-list" id="acTeamList"></div>
+      </div>
     </div>
   </section>
 </main>
@@ -372,9 +462,11 @@ body.locked header, body.locked main { display: none; }
   }
   function show() {
     const id = decodeURIComponent(location.hash.slice(1)).toLowerCase();
-    const t = TOOLS_ALL.find(x => x.id === id), onTpl = id === 'templates', onStaff = id === 'staff' && window.NT_ADMIN === true;
-    home.hidden = !!t || onTpl || onStaff; tplPage.hidden = !onTpl; document.getElementById('staff').hidden = !onStaff;
+    const t = TOOLS_ALL.find(x => x.id === id), onTpl = id === 'templates', onStaff = id === 'staff' && window.NT_ADMIN === true, onAct = id === 'activity';
+    home.hidden = !!t || onTpl || onStaff || onAct; tplPage.hidden = !onTpl; document.getElementById('staff').hidden = !onStaff; document.getElementById('activity').hidden = !onAct;
+    const ab = document.getElementById('actBtn'); if (onAct) ab.setAttribute('aria-current', 'page'); else ab.removeAttribute('aria-current');
     if (onStaff && window.NT_STAFF) window.NT_STAFF.load();
+    if (onAct && window.NT_ACT) window.NT_ACT.load();
     Object.values(frames).forEach(b => b.classList.remove('on'));
     TOOLS.forEach(x => document.getElementById('tab-' + x.id).setAttribute('aria-selected', String(!!t && x.id === t.id)));
     if (onTpl || (t && t.template)) tplBtn.setAttribute('aria-current', 'page'); else tplBtn.removeAttribute('aria-current');
@@ -385,7 +477,7 @@ body.locked header, body.locked main { display: none; }
       frameFor(t).classList.add('on');
       document.title = t.name + ' · NYANSATEK Resources';
       if (!t.template) document.getElementById('tab-' + t.id).scrollIntoView({block: 'nearest', inline: 'nearest'});
-    } else { document.title = onStaff ? 'Staff access · NYANSATEK Resources' : onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
+    } else { document.title = onAct ? 'Activity log · NYANSATEK Resources' : onStaff ? 'Staff access · NYANSATEK Resources' : onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
   }
   // arrow keys move between tabs
   tabs.addEventListener('keydown', e => {
@@ -417,6 +509,7 @@ body.locked header, body.locked main { display: none; }
   function lock(message) {
     me = null; window.NT_ADMIN = false;
     if (window.NT_APP) window.NT_APP.closeAll();
+    ['acMineList', 'acTeamList', 'acSummary', 'stList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
     document.body.classList.add('locked'); gate.hidden = false;
     glock.textContent = message || ''; glock.hidden = !message;
     gbtn.disabled = false; gbtn.textContent = 'Sign in';
@@ -479,24 +572,37 @@ body.locked header, body.locked main { display: none; }
     const { data, error } = await sb.rpc('nt_resources_staff_list');
     if (error) { list.innerHTML = `<div class="st-row"><span>${esc(error.message)}</span></div>`; return; }
     const isOwner = me && me.role === 'owner';
+    STAFF_ROWS = data;
+    const nameOf = id => { const p = data.find(x => x.user_id === id); return p ? (p.full_name || p.email) : ''; };
     list.innerHTML = data.map(r => {
       const self = me && r.user_id === me.user_id, locked = self || r.role === 'owner' || (r.role === 'admin' && !isOwner);
       const acts = locked ? '' : `
         ${r.active ? `<button class="sbtn bad" data-a="off" data-id="${r.user_id}">Switch off</button>` : `<button class="sbtn good" data-a="on" data-id="${r.user_id}">Switch on</button>`}
+        <button class="sbtn" data-a="mgr" data-id="${r.user_id}">Manager &amp; team</button>
         <button class="sbtn" data-a="pw" data-id="${r.user_id}" data-name="${esc(r.full_name || r.email)}">Reset password</button>
         ${isOwner ? `<button class="sbtn" data-a="role" data-id="${r.user_id}" data-role="${r.role}">${r.role === 'admin' ? 'Make staff' : 'Make admin'}</button>` : ''}
         <button class="sbtn bad" data-a="rm" data-id="${r.user_id}" data-name="${esc(r.full_name || r.email)}">Remove</button>`;
       return `<div class="st-row${r.active ? '' : ' off'}">
-        <div class="nm"><b>${esc(r.full_name || '—')}${self ? ' (you)' : ''}</b><small>${esc(r.email)}</small></div>
+        <div class="nm"><b>${esc(r.full_name || '—')}${self ? ' (you)' : ''}</b><small>${esc(r.email)}</small>
+          <div class="gnote" style="text-align:left;margin:4px 0 0">${r.team ? 'Team: ' + esc(r.team) : 'No team'} · ${r.manager_id ? 'Manager: ' + esc(nameOf(r.manager_id)) : 'No manager'}</div></div>
         <div><span class="chip ${r.role === 'staff' ? '' : 'gd'}">${esc(r.role[0].toUpperCase() + r.role.slice(1))}</span></div>
         <div>${r.active ? '<span class="chip ok">On</span>' : '<span class="chip no">Off</span>'}<div class="gnote" style="text-align:left;margin:4px 0 0">${r.active ? 'Last seen ' + fmt(r.last_seen_at) : 'Off since ' + fmt(r.disabled_at)}</div></div>
-        <div class="st-acts">${acts}</div></div>`;
+        <div class="st-acts">${acts}</div>
+        ${locked ? '' : `<form class="mgr-edit" data-id="${r.user_id}" hidden>
+          <label class="fld"><span>Manager</span><select name="manager_id"><option value="">No manager</option>${data.filter(x => x.active && x.user_id !== r.user_id).map(x => `<option value="${x.user_id}"${x.user_id === r.manager_id ? ' selected' : ''}>${esc(x.full_name || x.email)}</option>`).join('')}</select></label>
+          <label class="fld"><span>Team</span><input name="team" maxlength="60" value="${esc(r.team || '')}" placeholder="For example Marketing" list="teamList"></label>
+          <div class="st-acts" style="justify-content:flex-start"><button class="sbtn good" type="submit">Save</button><button class="sbtn" type="button" data-a="mgr-cancel">Cancel</button></div>
+        </form>`}</div>`;
     }).join('') || '<div class="st-row"><span>No staff yet.</span></div>';
+    const teams = [...new Set(data.map(x => x.team).filter(Boolean))];
+    $('teamList').innerHTML = teams.map(t => `<option value="${esc(t)}">`).join('');
   }
+  let STAFF_ROWS = [];
   window.NT_STAFF = { load: () => { if (window.NT_ADMIN) loadStaff(); } };
   $('stList').addEventListener('click', async e => {
     const b = e.target.closest('button[data-a]'); if (!b) return;
     const id = b.dataset.id, a = b.dataset.a;
+    if (a === 'mgr' || a === 'mgr-cancel') { const row = b.closest('.st-row'), f = row.querySelector('.mgr-edit'); f.hidden = a === 'mgr-cancel' ? true : !f.hidden; return; }
     try {
       if (a === 'off') { if (!confirm('Switch off this person? They will be signed out of NYANSATEK Resources within two minutes.')) return; await call({ action: 'set_active', user_id: id, active: false }); msg('Access switched off.'); }
       if (a === 'on') { await call({ action: 'set_active', user_id: id, active: true }); msg('Access switched on.'); }
@@ -510,6 +616,12 @@ body.locked header, body.locked main { display: none; }
       loadStaff();
     } catch (err) { msg(err.message, true); }
   });
+  $('stList').addEventListener('submit', async e => {
+    const f = e.target.closest('.mgr-edit'); if (!f) return;
+    e.preventDefault();
+    try { const d = Object.fromEntries(new FormData(f)); await call({ action: 'set_manager', user_id: f.dataset.id, manager_id: d.manager_id || null, team: d.team }); msg('Manager and team saved.'); loadStaff(); }
+    catch (err) { msg(err.message, true); }
+  });
   $('stAdd').addEventListener('submit', async e => {
     e.preventDefault();
     const f = e.target, d = Object.fromEntries(new FormData(f));
@@ -520,6 +632,134 @@ body.locked header, body.locked main { display: none; }
       f.reset(); loadStaff();
     } catch (err) { msg(err.message, true); }
     btn.disabled = false;
+  });
+
+
+  // ---------- activity log ----------
+  const TYPES = { client_visit: 'Client visit', sales_call: 'Sales call', flyer_distribution: 'Flyer or material distribution', event: 'Event or activation',
+    meeting: 'Meeting', delivery: 'Delivery', training: 'Training', office_work: 'Office work', other: 'Other' };
+  const OUTCOMES = { sale: 'Made a sale', interested: 'Interested', follow_up: 'Needs a follow-up', not_interested: 'Not interested', info_only: 'Information only' };
+  const money = v => 'GH₵' + Number(v || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const when = d => { const t = new Date(d); return isNaN(t) ? 'Just now' : t.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
+  const amsg = (t, bad) => { const m = $('acMsg'); m.textContent = t; m.className = 'st-msg' + (bad ? ' err' : ''); m.hidden = !t; };
+  let people = [], teamLogs = [], acTab = 'mine', map = null, layer = null;
+  const pname = id => { const p = people.find(x => x.user_id === id); return p ? (p.full_name || p.email) : 'Someone'; };
+  const canSeeTeam = () => people.some(p => !p.is_me);
+  const mapLink = r => r.location_status === 'ok'
+    ? `<a class="loc" target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${r.lat}&mlon=${r.lng}#map=17/${r.lat}/${r.lng}">View on map${r.accuracy_m ? ' (±' + Math.round(r.accuracy_m) + ' m)' : ''}</a>`
+    : `<span class="chip no">No location${r.location_status === 'denied' ? ' (permission off)' : ''}</span>`;
+  const entry = (r, withName) => {
+    const canDel = r.user_id === me.user_id && (Date.now() - new Date(r.logged_at)) < 9.5 * 60 * 1000;
+    return `<div class="ac-entry"><div><div class="t">${withName ? esc(pname(r.user_id)) + ' · ' : ''}${esc(TYPES[r.activity_type] || r.activity_type)} — ${esc(r.place)}</div>
+      <div class="m">${esc(when(r.logged_at))}${r.outcome ? ' · ' + esc(OUTCOMES[r.outcome]) : ''}${r.outcome === 'sale' && r.amount != null ? ' · ' + money(r.amount) : ''}</div></div>
+      <div class="r">${mapLink(r)}${canDel ? `<button class="sbtn bad" data-del="${r.id}" title="You can delete a log for 10 minutes after making it">Delete</button>` : ''}</div>
+      ${r.notes ? `<div class="nt">${esc(r.notes)}</div>` : ''}</div>`;
+  };
+
+  async function loadMine() {
+    const { data, error } = await sb.from('nt_activity_logs').select('*').eq('user_id', me.user_id).order('logged_at', { ascending: false }).limit(50);
+    $('acMineList').innerHTML = error ? `<div class="st-row">${esc(error.message)}</div>`
+      : (data.length ? data.map(r => entry(r, false)).join('') : '<div class="st-row"><span class="gnote" style="margin:0">Nothing logged yet. Your logs will show here.</span></div>');
+  }
+  async function loadTeam() {
+    const days = Number($('acPeriod').value), since = new Date(); since.setHours(0, 0, 0, 0); since.setDate(since.getDate() - (days - 1));
+    let q = sb.from('nt_activity_logs').select('*').gte('logged_at', since.toISOString()).order('logged_at', { ascending: false }).limit(3000);
+    const person = $('acPerson').value, team = $('acTeamSel').value;
+    if (person) q = q.eq('user_id', person);
+    const { data, error } = await q;
+    if (error) { amsg(error.message, true); return; }
+    const inTeam = id => !team || (people.find(p => p.user_id === id) || {}).team === team;
+    teamLogs = data.filter(r => inTeam(r.user_id));
+    // performance summary per person (everyone in view, including those with no logs)
+    const rows = people.filter(p => (!person || p.user_id === person) && (!team || p.team === team)).map(p => {
+      const L = teamLogs.filter(r => r.user_id === p.user_id);
+      return { p, n: L.length, days: new Set(L.map(r => new Date(r.logged_at).toDateString())).size,
+        visits: L.filter(r => r.activity_type === 'client_visit').length, sales: L.filter(r => r.outcome === 'sale').length,
+        amount: L.reduce((a, r) => a + (r.outcome === 'sale' ? Number(r.amount || 0) : 0), 0),
+        noloc: L.filter(r => r.location_status !== 'ok').length, last: L[0] ? L[0].logged_at : null };
+    }).sort((a, b) => b.n - a.n);
+    $('acSummary').innerHTML = `<thead><tr><th>Person</th><th>Team</th><th class="n">Activities</th><th class="n">Days active</th><th class="n">Client visits</th><th class="n">Sales</th><th class="n">Sales value</th><th class="n">No location</th><th>Last log</th></tr></thead><tbody>` +
+      (rows.map(x => `<tr><td><b>${esc(x.p.full_name || x.p.email)}</b>${x.p.is_me ? ' (you)' : ''}</td><td>${esc(x.p.team || '—')}</td><td class="n">${x.n}</td><td class="n">${x.days} of ${days}</td><td class="n">${x.visits}</td><td class="n">${x.sales}</td><td class="n">${money(x.amount)}</td><td class="n${x.noloc ? ' warn' : ''}">${x.noloc}</td><td>${x.last ? esc(when(x.last)) : '<span class="warn">Nothing logged</span>'}</td></tr>`).join('')
+       || '<tr><td colspan="9">No one to show.</td></tr>') + '</tbody>';
+    $('acTeamList').innerHTML = teamLogs.length ? teamLogs.slice(0, 300).map(r => entry(r, true)).join('') : '<div class="st-row"><span class="gnote" style="margin:0">No activity in this period.</span></div>';
+    drawMap();
+  }
+  function loadLeaflet() {
+    if (window.L) return Promise.resolve();
+    return new Promise((res, rej) => {
+      const c = document.createElement('link'); c.rel = 'stylesheet'; c.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(c);
+      const j = document.createElement('script'); j.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js'; j.onload = res; j.onerror = rej; document.head.appendChild(j);
+    });
+  }
+  async function drawMap() {
+    const box = $('acMap'), pts = teamLogs.filter(r => r.location_status === 'ok');
+    try { await loadLeaflet(); } catch (e) { box.innerHTML = '<div class="gnote">The map couldn’t load. Use the “View on map” links below.</div>'; return; }
+    if (!map) { box.innerHTML = ''; map = L.map(box, { scrollWheelZoom: false }).setView([6.69, -1.62], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map); }
+    if (layer) layer.remove();
+    layer = L.layerGroup(pts.map(r => L.circleMarker([r.lat, r.lng], { radius: 8, color: '#d4a017', weight: 2, fillColor: '#f2c14e', fillOpacity: .85 })
+      .bindPopup(`<b>${esc(pname(r.user_id))}</b><br>${esc(TYPES[r.activity_type])} — ${esc(r.place)}<br>${esc(when(r.logged_at))}`))).addTo(map);
+    setTimeout(() => { map.invalidateSize(); if (pts.length) map.fitBounds(L.latLngBounds(pts.map(r => [r.lat, r.lng])).pad(0.25), { maxZoom: 15 }); }, 50);
+  }
+  function setTab(t) {
+    acTab = t; $('acMine').hidden = t !== 'mine'; $('acTeam').hidden = t !== 'team';
+    $('acTabs').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tab === t)));
+    if (t === 'team') loadTeam(); else loadMine();
+  }
+  async function loadActivity() {
+    amsg('');
+    const { data } = await sb.rpc('nt_activity_people'); people = data || [];
+    $('acTabs').hidden = !canSeeTeam();
+    const teams = [...new Set(people.map(p => p.team).filter(Boolean))].sort();
+    $('acTeamSel').innerHTML = '<option value="">All teams</option>' + teams.map(t => `<option>${esc(t)}</option>`).join('');
+    $('acPerson').innerHTML = '<option value="">Everyone</option>' + people.map(p => `<option value="${p.user_id}">${esc(p.full_name || p.email)}${p.is_me ? ' (you)' : ''}</option>`).join('');
+    setTab(canSeeTeam() ? acTab : 'mine');
+  }
+  window.NT_ACT = { load: () => { if (me) loadActivity(); } };
+  $('acTabs').addEventListener('click', e => { const b = e.target.closest('button[data-tab]'); if (b) setTab(b.dataset.tab); });
+  ['acPeriod', 'acTeamSel', 'acPerson'].forEach(id => $(id).addEventListener('change', loadTeam));
+  $('acForm').outcome.addEventListener('change', e => { $('acAmt').hidden = e.target.value !== 'sale'; });
+  const getPosition = () => new Promise(res => {
+    if (!navigator.geolocation) return res({ status: 'unavailable' });
+    navigator.geolocation.getCurrentPosition(
+      p => res({ status: 'ok', lat: p.coords.latitude, lng: p.coords.longitude, accuracy_m: p.coords.accuracy }),
+      err => res({ status: err.code === 1 ? 'denied' : 'unavailable' }),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+  });
+  $('acForm').addEventListener('submit', async e => {
+    e.preventDefault(); amsg('');
+    const f = e.target, d = Object.fromEntries(new FormData(f)), btn = $('acBtn');
+    btn.disabled = true; btn.textContent = 'Getting your location…';
+    const pos = await getPosition();
+    if (pos.status !== 'ok') {
+      const why = pos.status === 'denied' ? 'Location permission is switched off for this site.' : 'Your location couldn’t be found.';
+      if (!confirm(why + '\n\nLog this activity without a location? Your manager will see that it has no location.')) { btn.disabled = false; btn.textContent = 'Log activity'; return; }
+    }
+    btn.textContent = 'Saving…';
+    const row = { activity_type: d.activity_type, place: d.place.trim(), notes: d.notes.trim() || null, outcome: d.outcome || null,
+      amount: d.outcome === 'sale' && d.amount !== '' ? Number(d.amount) : null, location_status: pos.status,
+      lat: pos.lat ?? null, lng: pos.lng ?? null, accuracy_m: pos.accuracy_m ?? null };
+    const { error } = await sb.from('nt_activity_logs').insert(row);
+    btn.disabled = false; btn.textContent = 'Log activity';
+    if (error) return amsg(error.message, true);
+    f.reset(); $('acAmt').hidden = true;
+    amsg(pos.status === 'ok' ? 'Logged, with your location.' : 'Logged without a location.');
+    loadMine();
+  });
+  $('activity').addEventListener('click', async e => {
+    const b = e.target.closest('button[data-del]'); if (!b) return;
+    if (!confirm('Delete this log? You can only do this within 10 minutes of making it.')) return;
+    const { error } = await sb.from('nt_activity_logs').delete().eq('id', b.dataset.del);
+    if (error) return amsg(error.message, true);
+    amsg('Log deleted.'); acTab === 'team' ? loadTeam() : loadMine();
+  });
+  $('acCsv').addEventListener('click', () => {
+    const cell = v => { v = v == null ? '' : String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+    const head = ['Date and time', 'Person', 'Team', 'Activity', 'Client or place', 'Outcome', 'Sale amount', 'Notes', 'Latitude', 'Longitude', 'Accuracy (m)', 'Location'];
+    const lines = [head].concat(teamLogs.map(r => { const p = people.find(x => x.user_id === r.user_id) || {};
+      return [new Date(r.logged_at).toLocaleString(), p.full_name || p.email, p.team, TYPES[r.activity_type], r.place, OUTCOMES[r.outcome] || '', r.amount, r.notes, r.lat, r.lng, r.accuracy_m && Math.round(r.accuracy_m), r.location_status === 'ok' ? 'Yes' : 'No']; }));
+    const blob = new Blob(['﻿' + lines.map(l => l.map(cell).join(',')).join('\r\n')], { type: 'text/csv' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `activity-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
   // start
