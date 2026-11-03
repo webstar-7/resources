@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NYANSATEK Resources</title>
-<meta name="description" content="NYANSATEK tools in one place: Passport photos, full-body photos, video editing, graphic design, beat making and HR management.">
+<meta name="description" content="NYANSATEK tools in one place: Passport photos, full-body photos, video editing, graphic design, beat making and HR management, plus POS, School and Gold for training.">
 <meta name="theme-color" content="#0b101b">
 <link rel="icon" href="../passport/icon-192.png" type="image/png">
 <style>
@@ -60,6 +60,8 @@
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
   .card .ic { width: 48px; height: 48px; border-radius: 11px; display: block; }
   .card h2 { font-size: 17px; margin: 4px 0 0; }
+  .card .tag { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--gold);
+    color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; vertical-align: 2px; }
   .card p { color: var(--mute); margin: 0; font-size: 14px; flex: 1; }
   .card .acts { display: flex; gap: 8px; flex-wrap: wrap; }
   .card a { text-decoration: none; padding: 7px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; border: 1px solid var(--line); }
@@ -92,7 +94,7 @@
       <h1 id="hT">NYANSATEK Resources</h1>
       <p class="lede">Every NYANSATEK tool in one place. Pick a tab to use a tool right here, or open it on its own to install it as an app on your phone or computer.</p>
       <div class="grid" id="cards"></div>
-      <p class="foot">Your work stays on your own device. Each tool keeps its own saved files, whether you open it here or on its own. PeopleDesk is the exception: it signs you in and keeps your organization&rsquo;s records online so your team can share them.</p>
+      <p class="foot">Your work stays on your own device. Each tool keeps its own saved files, whether you open it here or on its own. PeopleDesk is the exception: it signs you in and keeps your organization&rsquo;s records online so your team can share them. POS, School and Gold are here for training: they are the live systems, so practise with sample data and sign in with a training account, not a real shop, school or dealership account.</p>
     </div>
   </section>
 </main>
@@ -114,13 +116,20 @@
       blurb: 'Make beats and export WAV, stems or MIDI for recording. Create any frequency for meditation, healing and focus, and learn how sound works.'},
     {id: 'peopledesk', name: 'PeopleDesk', url: '../hrsm/', icon: '../hrsm/icon-192.png',
       blurb: 'Run HR for your organization: staff records, attendance, leave, payroll, training, gate scanning and team calls. Free to use.'},
+    // business systems, here so staff can practise on them
+    {id: 'pos', name: 'POS', url: 'https://nyansatek.shop/', icon: 'https://nyansatek.shop/icon-192.png', training: true,
+      blurb: 'Point of sale for shops: sell and print receipts, manage stock across stores, suppliers, and sales and profit reports.'},
+    {id: 'school', name: 'School', url: 'https://nyansatek.school/', icon: 'https://nyansatek.school/apple-touch-icon.png', training: true,
+      blurb: 'School management: register students, attendance, fees, results, gate pickups and messages to parents.'},
+    {id: 'gold', name: 'Gold', url: '../gold/', icon: '../gold/icon-192.png', training: true,
+      blurb: 'Gold dealership: karat charts and daily rates, dispatches, cash received and expenses.'},
   ];
   const studioIcon = '<svg viewBox="0 0 48 48" class="ic" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#f2b233"/><text x="24" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="24" fill="#241a00">N</text></svg>';
   const iconHtml = (t, cls) => t.icon ? `<img src="${t.icon}" alt="" class="${cls}" width="48" height="48">` : studioIcon.replace('class="ic"', `class="${cls}"`);
 
   const tabs = document.getElementById('tabs'), main = document.querySelector('main'), home = document.getElementById('home'), own = document.getElementById('own');
   tabs.innerHTML = TOOLS.map(t => `<a role="tab" href="#${t.id}" id="tab-${t.id}" aria-selected="false" aria-controls="frame-${t.id}">${iconHtml(t, '')}${t.name}</a>`).join('');
-  document.getElementById('cards').innerHTML = TOOLS.map(t => `<article class="card">${iconHtml(t, 'ic')}<h2>${t.name}</h2><p>${t.blurb}</p>
+  document.getElementById('cards').innerHTML = TOOLS.map(t => `<article class="card">${iconHtml(t, 'ic')}<h2>${t.name}${t.training ? '<span class="tag">Training</span>' : ''}</h2><p>${t.blurb}</p>
     <div class="acts"><a class="go" href="#${t.id}">Open here</a><a href="${t.url}" target="_blank" rel="noopener">Open on its own</a></div></article>`).join('');
 
   const frames = {};
