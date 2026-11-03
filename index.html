@@ -150,9 +150,104 @@
   .tile, .tile.in { opacity: 1; translate: none; transition: none; }
   .tile .shot img { transition: none; }
 }
+
+/* staff sign-in: nothing on this page loads until access is confirmed */
+body.locked header, body.locked main { display: none; }
+#gate { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px 16px; overflow: auto;
+  background: radial-gradient(ellipse at 50% 20%, #1b2742 0%, var(--bg) 65%); }
+#gate[hidden] { display: none; }
+.gcard { width: 100%; max-width: 390px; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 28px 24px 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.gcard .glogo { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .05em; margin-bottom: 18px; }
+.gcard .glogo .nt-logo { width: 38px; height: 38px; }
+.gcard .glogo small { display: block; color: var(--mute); font-weight: 600; letter-spacing: .02em; font-size: 12px; }
+.gcard h1 { font-size: 22px; margin: 0 0 4px; }
+.gcard .sub { color: var(--mute); margin: 0 0 18px; font-size: 14px; }
+.fld { display: block; margin-bottom: 12px; }
+.fld span { display: block; font-size: 13px; font-weight: 600; color: #c4cbd8; margin-bottom: 5px; }
+.fld input, .fld select { width: 100%; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 10px; padding: 11px 12px; min-height: 44px; }
+.fld input:focus, .fld select:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: transparent; }
+.pw { position: relative; }
+.pw input { padding-right: 70px; }
+.pw button { position: absolute; right: 6px; top: 50%; translate: 0 -50%; background: none; border: 0; color: var(--gold); font-weight: 700;
+  font-size: 13px; cursor: pointer; min-height: 36px; padding: 0 10px; }
+.btnp { width: 100%; min-height: 46px; border: 0; border-radius: 11px; font: inherit; font-weight: 800; font-size: 15px; cursor: pointer;
+  color: var(--goldink); background: linear-gradient(135deg, #f2c14e, #d4a017); }
+.btnp:disabled { opacity: .6; cursor: progress; }
+.gerr { background: #3a1418; border: 1px solid #7a2a30; color: #ffb4b4; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+.gerr[hidden] { display: none; }
+.gnote { color: var(--mute); font-size: 13px; margin: 14px 0 0; text-align: center; }
+
+/* signed-in person in the top bar */
+.me { flex: none; position: relative; }
+.me > button { display: flex; align-items: center; gap: 8px; background: var(--panel2); border: 1px solid var(--line); color: var(--text);
+  border-radius: 999px; padding: 4px 10px 4px 4px; cursor: pointer; font: inherit; font-weight: 600; font-size: 13px; min-height: 36px; }
+.me .av { width: 28px; height: 28px; border-radius: 50%; background: var(--gold); color: var(--goldink); display: grid; place-items: center; font-weight: 800; font-size: 12px; }
+.me .mn { max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.me .menu { position: absolute; right: 0; top: calc(100% + 6px); min-width: 200px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; padding: 6px; box-shadow: 0 18px 40px rgba(0,0,0,.45); z-index: 20; }
+.me .menu[hidden] { display: none; }
+.me .menu .who { padding: 8px 10px 10px; border-bottom: 1px solid var(--line); margin-bottom: 4px; font-size: 13px; }
+.me .menu .who small { display: block; color: var(--mute); }
+.me .menu a, .me .menu button { display: block; width: 100%; text-align: left; padding: 10px; border-radius: 8px; color: var(--text);
+  text-decoration: none; background: none; border: 0; font: inherit; font-size: 14px; cursor: pointer; }
+.me .menu a:hover, .me .menu button:hover { background: var(--panel2); }
+
+/* staff page */
+#staff { position: absolute; inset: 0; overflow: auto; padding: 28px 16px 56px; }
+#staff[hidden] { display: none; }
+.st-wrap { max-width: 980px; margin: 0 auto; }
+.st-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.st-head p { color: var(--mute); margin: 4px 0 0; max-width: 560px; }
+.st-add { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
+.st-add h2 { font-size: 16px; margin: 0 0 12px; }
+.st-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.st-grid .btnp { min-height: 44px; }
+.st-list { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.st-row { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, .8fr) minmax(0, .8fr) auto; gap: 12px; align-items: center;
+  padding: 14px 16px; border-top: 1px solid var(--line); }
+.st-row:first-child { border-top: 0; }
+.st-row.off { opacity: .62; }
+.st-row .nm b { display: block; }
+.st-row .nm small { color: var(--mute); word-break: break-all; }
+.chip { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid var(--line); }
+.chip.ok { color: #7ee2a8; border-color: #2a6b47; background: #0f2a1d; }
+.chip.no { color: #ffb4b4; border-color: #7a2a30; background: #2a1215; }
+.chip.gd { color: var(--gold); border-color: #6b5413; }
+.st-acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.sbtn { min-height: 36px; padding: 0 12px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel2); color: var(--text);
+  font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.sbtn:hover { border-color: var(--gold); }
+.sbtn.bad { color: #ffb4b4; }
+.sbtn.good { color: #7ee2a8; }
+.st-msg { margin: 0 0 14px; padding: 10px 12px; border-radius: 10px; font-size: 14px; background: #0f2a1d; border: 1px solid #2a6b47; color: #bdf0d2; }
+.st-msg.err { background: #2a1215; border-color: #7a2a30; color: #ffb4b4; }
+.st-msg[hidden] { display: none; }
+.lockmsg { background: #2a2208; border: 1px solid #6b5413; color: #f2d58a; border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-bottom: 14px; }
+.lockmsg[hidden] { display: none; }
+@media (max-width: 760px) {
+  .st-grid { grid-template-columns: minmax(0, 1fr); }
+  .st-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .st-row .st-acts { grid-column: 1 / -1; justify-content: flex-start; }
+}
+@media (max-width: 640px) { .me .mn { display: none; } .me > button { padding: 4px; } }
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate">
+  <form class="gcard" id="gform" autocomplete="on">
+    <div class="glogo"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg><div>NYANSATEK<small>Resources</small></div></div>
+    <h1>Staff sign in</h1>
+    <p class="sub">NYANSATEK Resources is for NYANSATEK staff only.</p>
+    <div class="lockmsg" id="glock" hidden></div>
+    <div class="gerr" id="gerr" role="alert" hidden></div>
+    <label class="fld"><span>Email</span><input id="gemail" type="email" autocomplete="username" required></label>
+    <label class="fld"><span>Password</span><div class="pw"><input id="gpw" type="password" autocomplete="current-password" required><button type="button" id="gpwt" aria-label="Show password">Show</button></div></label>
+    <button class="btnp" id="gbtn" type="submit">Sign in</button>
+    <p class="gnote">Forgot your password, or need access? Ask your NYANSATEK administrator.</p>
+  </form>
+</div>
 <header>
   <a class="brand" href="#" aria-label="NYANSATEK Resources home"><span class="mk nt"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg></span><span class="word">NYANSATEK <small>Resources</small></span></a>
   <nav role="tablist" aria-label="Tools" id="tabs"></nav>
@@ -161,6 +256,8 @@
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5"/></svg>
     <span>TEMPLATE<span class="lbl2"> APPS</span></span>
   </a>
+  <div class="me" id="me"><button type="button" id="meBtn" aria-haspopup="true" aria-expanded="false"><span class="av" id="meAv">?</span><span class="mn" id="meName"></span></button>
+    <div class="menu" id="meMenu" hidden><div class="who" id="meWho"></div><a href="#staff" id="meStaff" hidden>Manage staff</a><a href="#">All tools</a><button type="button" id="meOut">Sign out</button></div></div>
 </header>
 
 <main>
@@ -188,6 +285,24 @@
       </div>
       <div class="tpl-grid" id="tplGrid"></div>
       <p class="tpl-note">These are sample editions: everything you enter stays in your own browser on this device. Each template can be set up with your own business name, logo and staff.</p>
+    </div>
+  </section>
+  <section id="staff" hidden aria-labelledby="stT">
+    <div class="st-wrap">
+      <div class="st-head"><div><h1 id="stT">Staff access</h1><p>Only the people listed here, and switched on, can sign in to NYANSATEK Resources. When someone leaves, switch them off: they are signed out within two minutes and can&rsquo;t sign back in.</p></div></div>
+      <div class="st-msg" id="stMsg" role="status" hidden></div>
+      <form class="st-add" id="stAdd">
+        <h2>Add a staff member</h2>
+        <div class="st-grid">
+          <label class="fld"><span>Full name</span><input name="full_name" required autocomplete="off"></label>
+          <label class="fld"><span>Email</span><input name="email" type="email" required autocomplete="off"></label>
+          <label class="fld"><span>Starting password</span><input name="password" type="text" minlength="8" autocomplete="off" placeholder="At least 8 characters"></label>
+          <label class="fld"><span>Role</span><select name="role"><option value="staff">Staff</option><option value="admin" id="stAdminOpt">Admin (can manage staff)</option></select></label>
+        </div>
+        <button class="btnp" type="submit" style="max-width:220px;margin-top:4px">Add staff member</button>
+        <p class="gnote" style="text-align:left;margin-top:10px">If the person already has a NYANSATEK login (for PeopleDesk or School), they keep their existing password and the starting password is ignored.</p>
+      </form>
+      <div class="st-list" id="stList"><div class="st-row"><span class="muted">Loading&hellip;</span></div></div>
     </div>
   </section>
 </main>
@@ -257,8 +372,9 @@
   }
   function show() {
     const id = decodeURIComponent(location.hash.slice(1)).toLowerCase();
-    const t = TOOLS_ALL.find(x => x.id === id), onTpl = id === 'templates';
-    home.hidden = !!t || onTpl; tplPage.hidden = !onTpl;
+    const t = TOOLS_ALL.find(x => x.id === id), onTpl = id === 'templates', onStaff = id === 'staff' && window.NT_ADMIN === true;
+    home.hidden = !!t || onTpl || onStaff; tplPage.hidden = !onTpl; document.getElementById('staff').hidden = !onStaff;
+    if (onStaff && window.NT_STAFF) window.NT_STAFF.load();
     Object.values(frames).forEach(b => b.classList.remove('on'));
     TOOLS.forEach(x => document.getElementById('tab-' + x.id).setAttribute('aria-selected', String(!!t && x.id === t.id)));
     if (onTpl || (t && t.template)) tplBtn.setAttribute('aria-current', 'page'); else tplBtn.removeAttribute('aria-current');
@@ -269,7 +385,7 @@
       frameFor(t).classList.add('on');
       document.title = t.name + ' · NYANSATEK Resources';
       if (!t.template) document.getElementById('tab-' + t.id).scrollIntoView({block: 'nearest', inline: 'nearest'});
-    } else { document.title = onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
+    } else { document.title = onStaff ? 'Staff access · NYANSATEK Resources' : onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
   }
   // arrow keys move between tabs
   tabs.addEventListener('keydown', e => {
@@ -277,8 +393,145 @@
     const list = [...tabs.querySelectorAll('a')], i = list.indexOf(document.activeElement); if (i < 0) return;
     e.preventDefault(); const n = list[(i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length]; n.focus(); n.click();
   });
-  window.addEventListener('hashchange', show);
-  show();
+  window.NT_APP = {
+    start() { window.addEventListener('hashchange', show); show(); },
+    // remove every open app so nothing keeps running after access ends
+    closeAll() { for (const k in frames) { frames[k].remove(); delete frames[k]; } try { reel.pause(); } catch (e) {} },
+    show
+  };
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+(() => {
+  'use strict';
+  const SB_URL = 'https://efgckodcvtzrjiabcktf.supabase.co';
+  const SB_KEY = 'sb_publishable_Kd560On82iHu2UadJow4lQ_BLP1Hr4L'; // publishable key: safe to be public
+  const RECHECK_MS = 2 * 60 * 1000;
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const gate = $('gate'), gerr = $('gerr'), glock = $('glock'), gbtn = $('gbtn');
+  const showErr = m => { gerr.textContent = m; gerr.hidden = !m; };
+  let sb = null, me = null, started = false, timer = null;
+
+  function lock(message) {
+    me = null; window.NT_ADMIN = false;
+    if (window.NT_APP) window.NT_APP.closeAll();
+    document.body.classList.add('locked'); gate.hidden = false;
+    glock.textContent = message || ''; glock.hidden = !message;
+    gbtn.disabled = false; gbtn.textContent = 'Sign in';
+    clearInterval(timer); timer = null;
+  }
+  function unlock(row) {
+    me = row; window.NT_ADMIN = row.role === 'owner' || row.role === 'admin';
+    document.body.classList.remove('locked'); gate.hidden = true; showErr(''); glock.hidden = true;
+    const name = row.full_name || row.email;
+    $('meAv').textContent = name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || '?';
+    $('meName').textContent = name.split(/\s+/)[0];
+    $('meWho').innerHTML = `<b>${esc(name)}</b><small>${esc(row.email)} · ${esc(row.role[0].toUpperCase() + row.role.slice(1))}</small>`;
+    $('meStaff').hidden = !window.NT_ADMIN;
+    if (!started) { started = true; window.NT_APP.start(); } else window.NT_APP.show();
+    clearInterval(timer); timer = setInterval(check, RECHECK_MS);
+  }
+  // ask the server whether this person may still use Resources
+  async function check() {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) return lock(me ? 'You have been signed out.' : '');
+      const { data, error } = await sb.rpc('nt_resources_me');
+      if (error) { if (/JWT|token|auth/i.test(error.message)) return lock('Please sign in again.'); return; } // network hiccup: try again later
+      if (!data) { await sb.auth.signOut(); return lock('Your access to NYANSATEK Resources has been switched off. Ask your administrator if this is a mistake.'); }
+      if (!me || me.role !== data.role || me.full_name !== data.full_name) unlock(data);
+    } catch (e) { /* offline: keep what is open, check again on the next tick */ }
+  }
+
+  $('gpwt').addEventListener('click', () => { const i = $('gpw'), on = i.type === 'password'; i.type = on ? 'text' : 'password'; $('gpwt').textContent = on ? 'Hide' : 'Show'; });
+  $('gform').addEventListener('submit', async e => {
+    e.preventDefault(); showErr(''); glock.hidden = true;
+    if (!sb) return showErr("Can't reach the sign-in service. Check your internet connection and reload the page.");
+    gbtn.disabled = true; gbtn.textContent = 'Signing in…';
+    const { error } = await sb.auth.signInWithPassword({ email: $('gemail').value.trim(), password: $('gpw').value });
+    if (error) { gbtn.disabled = false; gbtn.textContent = 'Sign in'; return showErr(/invalid/i.test(error.message) ? 'That email or password is not right.' : error.message); }
+    $('gpw').value = '';
+    await check();
+    if (!me) { gbtn.disabled = false; gbtn.textContent = 'Sign in'; }
+  });
+
+  // top-bar menu
+  const meBtn = $('meBtn'), meMenu = $('meMenu');
+  meBtn.addEventListener('click', () => { const open = meMenu.hidden; meMenu.hidden = !open; meBtn.setAttribute('aria-expanded', String(open)); });
+  document.addEventListener('click', e => { if (!$('me').contains(e.target)) { meMenu.hidden = true; meBtn.setAttribute('aria-expanded', 'false'); } });
+  meMenu.addEventListener('click', e => { if (e.target.closest('a')) meMenu.hidden = true; });
+  $('meOut').addEventListener('click', async () => { meMenu.hidden = true; await sb.auth.signOut(); location.hash = ''; lock(''); });
+
+  // staff page (owners and admins)
+  const msg = (t, bad) => { const m = $('stMsg'); m.textContent = t; m.className = 'st-msg' + (bad ? ' err' : ''); m.hidden = !t; };
+  async function call(body) {
+    const { data, error } = await sb.functions.invoke('nt-resources-staff', { body });
+    if (error) { let m = error.message; try { const j = await error.context.json(); if (j && j.error) m = j.error; } catch (x) {} throw new Error(m); }
+    if (data && data.error) throw new Error(data.error);
+    return data;
+  }
+  const fmt = d => d ? new Date(d).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+  async function loadStaff() {
+    $('stAdminOpt').hidden = !(me && me.role === 'owner');
+    const list = $('stList');
+    const { data, error } = await sb.rpc('nt_resources_staff_list');
+    if (error) { list.innerHTML = `<div class="st-row"><span>${esc(error.message)}</span></div>`; return; }
+    const isOwner = me && me.role === 'owner';
+    list.innerHTML = data.map(r => {
+      const self = me && r.user_id === me.user_id, locked = self || r.role === 'owner' || (r.role === 'admin' && !isOwner);
+      const acts = locked ? '' : `
+        ${r.active ? `<button class="sbtn bad" data-a="off" data-id="${r.user_id}">Switch off</button>` : `<button class="sbtn good" data-a="on" data-id="${r.user_id}">Switch on</button>`}
+        <button class="sbtn" data-a="pw" data-id="${r.user_id}" data-name="${esc(r.full_name || r.email)}">Reset password</button>
+        ${isOwner ? `<button class="sbtn" data-a="role" data-id="${r.user_id}" data-role="${r.role}">${r.role === 'admin' ? 'Make staff' : 'Make admin'}</button>` : ''}
+        <button class="sbtn bad" data-a="rm" data-id="${r.user_id}" data-name="${esc(r.full_name || r.email)}">Remove</button>`;
+      return `<div class="st-row${r.active ? '' : ' off'}">
+        <div class="nm"><b>${esc(r.full_name || '—')}${self ? ' (you)' : ''}</b><small>${esc(r.email)}</small></div>
+        <div><span class="chip ${r.role === 'staff' ? '' : 'gd'}">${esc(r.role[0].toUpperCase() + r.role.slice(1))}</span></div>
+        <div>${r.active ? '<span class="chip ok">On</span>' : '<span class="chip no">Off</span>'}<div class="gnote" style="text-align:left;margin:4px 0 0">${r.active ? 'Last seen ' + fmt(r.last_seen_at) : 'Off since ' + fmt(r.disabled_at)}</div></div>
+        <div class="st-acts">${acts}</div></div>`;
+    }).join('') || '<div class="st-row"><span>No staff yet.</span></div>';
+  }
+  window.NT_STAFF = { load: () => { if (window.NT_ADMIN) loadStaff(); } };
+  $('stList').addEventListener('click', async e => {
+    const b = e.target.closest('button[data-a]'); if (!b) return;
+    const id = b.dataset.id, a = b.dataset.a;
+    try {
+      if (a === 'off') { if (!confirm('Switch off this person? They will be signed out of NYANSATEK Resources within two minutes.')) return; await call({ action: 'set_active', user_id: id, active: false }); msg('Access switched off.'); }
+      if (a === 'on') { await call({ action: 'set_active', user_id: id, active: true }); msg('Access switched on.'); }
+      if (a === 'role') { await call({ action: 'set_role', user_id: id, role: b.dataset.role === 'admin' ? 'staff' : 'admin' }); msg('Role changed.'); }
+      if (a === 'rm') { if (!confirm(`Remove ${b.dataset.name} from the staff list? Their login stays for any other NYANSATEK app they use.`)) return; await call({ action: 'remove', user_id: id }); msg('Removed from the staff list.'); }
+      if (a === 'pw') {
+        const p = prompt(`New password for ${b.dataset.name} (at least 8 characters).\nThis also changes their password for PeopleDesk or School if they use the same login.`);
+        if (p === null) return;
+        await call({ action: 'reset_password', user_id: id, password: p }); msg('Password changed. Give the new password to the person directly.');
+      }
+      loadStaff();
+    } catch (err) { msg(err.message, true); }
+  });
+  $('stAdd').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, d = Object.fromEntries(new FormData(f));
+    const btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+    try {
+      const r = await call({ action: 'create', ...d });
+      msg(r.linked ? `${d.full_name} already had a NYANSATEK login, so they sign in with their existing password.` : `${d.full_name} can now sign in with ${d.email} and the starting password you set. Give it to them directly.`);
+      f.reset(); loadStaff();
+    } catch (err) { msg(err.message, true); }
+    btn.disabled = false;
+  });
+
+  // start
+  if (!window.supabase || !window.supabase.createClient) {
+    lock(''); showErr("Can't reach the sign-in service. Check your internet connection and reload the page."); return;
+  }
+  // its own storage key, so signing in or out here doesn't sign you in or out of PeopleDesk on the same site
+  sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, storageKey: 'nt-resources-auth' } });
+  sb.auth.onAuthStateChange((ev) => { if (ev === 'SIGNED_OUT' && me) lock('You have been signed out.'); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && me) check(); });
+  window.addEventListener('focus', () => { if (me) check(); });
+  lock(''); check();
 })();
 </script>
 </body>
