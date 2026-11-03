@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NYANSATEK Resources</title>
-<meta name="description" content="NYANSATEK tools in one place: Passport photos, full-body photos, video editing, graphic design, beat making and HR management, plus POS, School and Gold for training.">
+<meta name="description" content="NYANSATEK tools in one place: Passport photos, full-body photos, video editing, graphic design, beat making and HR management, POS, School and Gold for training, plus 12 template business apps.">
 <meta name="theme-color" content="#0b101b">
 <link rel="icon" href="../passport/icon-192.png" type="image/png">
 <style>
@@ -79,12 +79,88 @@
 /* NYANSATEK credit: logo + "by NYANSATEK" after the product name */
 .nt-by{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;letter-spacing:.02em;line-height:1.2;white-space:nowrap;opacity:.92;vertical-align:middle}.nt-by .nt-logo{width:18px;height:18px;flex:none;display:block}.nt-by b{font-weight:800;letter-spacing:.06em}.nt-by.nt-lg{font-size:13.5px;gap:7px}.nt-by.nt-lg .nt-logo{width:22px;height:22px}
 .brand .mk.nt{background:none;width:30px;height:30px}.brand .mk.nt .nt-logo{width:30px;height:30px}
+
+/* TEMPLATE APPS: a separate, bigger entry in the top bar and its own page of tiles */
+.tpl-btn { flex: none; display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 10px;
+  text-decoration: none; font-weight: 800; font-size: 14px; letter-spacing: .08em; color: var(--goldink);
+  background: linear-gradient(135deg, #f2c14e, #d4a017 55%, #b8860b); box-shadow: 0 4px 14px rgba(212,160,23,.28), inset 0 1px 0 rgba(255,255,255,.35);
+  border: 0; white-space: nowrap; margin-left: 4px; position: relative; overflow: hidden; }
+.tpl-btn svg { width: 18px; height: 18px; flex: none; }
+.tpl-btn::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+  translate: -120% 0; animation: shine 4.5s ease-in-out 1.2s infinite; }
+@keyframes shine { 0%, 70% { translate: -120% 0; } 100% { translate: 120% 0; } }
+.tpl-btn:hover { filter: brightness(1.06); }
+.tpl-btn[aria-current="page"] { outline: 2px solid #fff3; outline-offset: 2px; }
+.tpl-btn:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.sep-v { width: 1px; height: 26px; background: var(--line); flex: none; }
+
+#templates { position: absolute; inset: 0; overflow: auto; padding: 28px 16px 56px; }
+#templates[hidden] { display: none; }
+.tpl-wrap { max-width: 1180px; margin: 0 auto; }
+.tpl-hero { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-bottom: 30px; }
+.tpl-hero video { width: 100%; aspect-ratio: 16 / 9; display: block; border-radius: 16px; background: #000; border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(0,0,0,.45); object-fit: cover; }
+.tpl-kicker { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-weight: 800; letter-spacing: .14em; font-size: 12px; text-transform: uppercase; }
+.tpl-kicker .nt-logo { width: 20px; height: 20px; }
+.tpl-hero h1 { font-size: clamp(30px, 5vw, 52px); letter-spacing: .02em; margin: 10px 0 10px; line-height: 1.02; }
+.tpl-hero h1 span { background: linear-gradient(90deg, #f6d27a, #d4a017); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.tpl-hero p { color: var(--mute); margin: 0 0 16px; max-width: 520px; font-size: 16px; }
+.tpl-stats { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 4px; }
+.tpl-stats div { font-size: 13px; color: var(--mute); }
+.tpl-stats b { display: block; font-size: 22px; color: var(--text); }
+.tpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 18px; }
+.tile { --acc: var(--gold); position: relative; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  opacity: 0; translate: 0 18px; }
+.tile.in { opacity: 1; translate: 0 0; transition: opacity .55s ease var(--d, 0s), translate .55s cubic-bezier(.16,1,.3,1) var(--d, 0s), transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.tile:hover, .tile:focus-within { transform: translateY(-4px); border-color: var(--acc); box-shadow: 0 18px 40px rgba(0,0,0,.4), 0 0 0 1px var(--acc); }
+.tile .shot { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--ink, #111); }
+.tile .shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; display: block; transition: transform 1.2s cubic-bezier(.16,1,.3,1); transform-origin: 20% 20%; }
+.tile:hover .shot img { transform: scale(1.12); }
+.tile .shot::after { content: ""; position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(transparent, rgba(11,16,27,.85)); }
+.tile .num { position: absolute; left: 12px; top: 10px; z-index: 1; font-weight: 800; font-size: 12px; letter-spacing: .1em; color: #fff;
+  background: var(--acc); padding: 3px 8px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.tile .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; border-top: 3px solid var(--acc); }
+.tile h2 { font-size: 17px; margin: 0; }
+.tile .biz { font-size: 12.5px; color: var(--mute); }
+.tile p { color: #c4cbd8; margin: 2px 0 8px; font-size: 14px; flex: 1; }
+.tile .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.tile .acts a { text-decoration: none; padding: 8px 13px; border-radius: 9px; font-size: 13px; font-weight: 700; border: 1px solid var(--line); }
+.tile .acts a.go { background: var(--acc); border-color: var(--acc); color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,.25); }
+.tile .acts a:not(.go):hover { border-color: var(--acc); }
+.tile .acts a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.tpl-note { color: var(--mute); font-size: 13px; margin-top: 26px; }
+.tpl-promo { display: flex; align-items: center; gap: 16px; text-decoration: none; margin: 0 0 22px; padding: 16px 18px; border-radius: 14px;
+  background: linear-gradient(120deg, #2a2208, #121a2a 60%); border: 1px solid #5c4a12; }
+.tpl-promo:hover { border-color: var(--gold); }
+.tpl-promo .nt-logo { width: 40px; height: 40px; flex: none; }
+.tpl-promo b { display: block; font-size: 17px; letter-spacing: .06em; }
+.tpl-promo span { color: var(--mute); font-size: 14px; }
+.tpl-promo .arr { margin-left: auto; color: var(--gold); font-weight: 800; font-size: 20px; }
+@media (max-width: 860px) { .tpl-hero { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
+@media (max-width: 640px) {
+  .tpl-btn { height: 34px; padding: 0 11px; font-size: 12px; letter-spacing: .05em; gap: 6px; }
+  .tpl-btn svg { width: 16px; height: 16px; }
+  .sep-v { display: none; }
+  #templates { padding: 18px 12px 48px; }
+}
+@media (max-width: 400px) { .tpl-btn { padding: 0 9px; font-size: 11px; letter-spacing: .03em; gap: 5px; } .tpl-btn svg { width: 14px; height: 14px; } }
+@media (prefers-reduced-motion: reduce) {
+  .tpl-btn::after { animation: none; display: none; }
+  .tile, .tile.in { opacity: 1; translate: none; transition: none; }
+  .tile .shot img { transition: none; }
+}
 </style>
 </head>
 <body>
 <header>
   <a class="brand" href="#" aria-label="NYANSATEK Resources home"><span class="mk nt"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg></span><span class="word">NYANSATEK <small>Resources</small></span></a>
   <nav role="tablist" aria-label="Tools" id="tabs"></nav>
+  <span class="sep-v" aria-hidden="true"></span>
+  <a class="tpl-btn" id="tplBtn" href="#templates" title="Ready-made business systems: school, clinic, church, hotel, shop and more">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5"/></svg>
+    <span>TEMPLATE<span class="lbl2"> APPS</span></span>
+  </a>
   <a class="own" id="own" target="_blank" rel="noopener" hidden title="Open this tool on its own, full screen, where it can also be installed as an app">
     <span class="lbl">Open on its own</span>
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 2.5h4.5V7M13.5 2.5L7 9M11.5 9.5v4h-9v-9h4"/></svg>
@@ -96,8 +172,26 @@
     <div class="wrap">
       <h1 id="hT">NYANSATEK Resources</h1>
       <p class="lede">Every NYANSATEK tool in one place. Pick a tab to use a tool right here, or open it on its own to install it as an app on your phone or computer.</p>
+      <a class="tpl-promo" href="#templates"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg><div><b>TEMPLATE APPS</b><span>12 ready-made business systems: school, clinic, church, hotel, shop, transport and more.</span></div><span class="arr" aria-hidden="true">&rarr;</span></a>
       <div class="grid" id="cards"></div>
       <p class="foot">Your work stays on your own device. Each tool keeps its own saved files, whether you open it here or on its own. PeopleDesk is the exception: it signs you in and keeps your organization&rsquo;s records online so your team can share them. POS, School and Gold are here for training: they are the live systems, so practise with sample data and sign in with a training account, not a real shop, school or dealership account.</p>
+    </div>
+  </section>
+  <section id="templates" hidden aria-labelledby="tplT">
+    <div class="tpl-wrap">
+      <div class="tpl-hero">
+        <video id="tplReel" muted loop playsinline preload="metadata" poster="assets/templates/reel-poster.jpg" aria-label="A short tour of the twelve template apps">
+          <source src="assets/templates/reel.mp4" type="video/mp4">
+        </video>
+        <div>
+          <div class="tpl-kicker"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg>Template apps by NYANSATEK</div>
+          <h1 id="tplT"><span>TEMPLATE APPS</span></h1>
+          <p>Ready-made business systems you can open and try right now. Each one is set up with a sample business, so you can click around, record sales or members, and print, without touching real data.</p>
+          <div class="tpl-stats"><div><b>12</b>business types</div><div><b>Phone, tablet or PC</b>works on any screen</div><div><b>Offline</b>daily work needs no internet</div></div>
+        </div>
+      </div>
+      <div class="tpl-grid" id="tplGrid"></div>
+      <p class="tpl-note">These are sample editions: everything you enter stays in your own browser on this device. Each template can be set up with your own business name, logo and staff.</p>
     </div>
   </section>
 </main>
@@ -135,6 +229,21 @@
   document.getElementById('cards').innerHTML = TOOLS.map(t => `<article class="card">${iconHtml(t, 'ic')}<h2>${t.name}${t.training ? '<span class="tag">Training</span>' : ''}</h2><p>${t.blurb}</p>
     <div class="acts"><a class="go" href="#${t.id}">Open here</a><a href="${t.url}" target="_blank" rel="noopener">Open on its own</a></div></article>`).join('');
 
+  const TOOLS_ALL = TOOLS.slice();
+
+  // TEMPLATE APPS: sample editions of the business systems (ADANFOPA is a client system and is not listed)
+  const TEMPLATES = [{"id": "accounts", "product": "General Ledger & Accounts", "biz": "Sample Trading Ltd", "desc": "Double-entry books with a live trial balance and financial statements.", "accent": "#2f8f5b", "ink": "#123a2e"}, {"id": "church", "product": "Church & Association Manager", "biz": "Emmanuel Chapel", "desc": "Members, giving, attendance and pledges, with statements members can trust.", "accent": "#d6a24b", "ink": "#4b2142"}, {"id": "clinic", "product": "Clinic Manager", "biz": "Grace Family Clinic", "desc": "Patient queue, appointments, records and billing for small clinics.", "accent": "#1eb2c6", "ink": "#0c4a63"}, {"id": "ems", "product": "Employment Manager", "biz": "Crestview Services Ltd", "desc": "Staff records, attendance, leave and payroll, kept private on site.", "accent": "#6cb2eb", "ink": "#2a3b2f"}, {"id": "gym", "product": "Gym Manager", "biz": "PowerHouse Fitness", "desc": "Member check-in, renewals and expiry reminders at the front desk.", "accent": "#f95a79", "ink": "#2d2a63"}, {"id": "hotel", "product": "Hotel & Lodge Manager", "biz": "Sunrise Lodge", "desc": "Rooms, bookings, guest bills and check-out invoices.", "accent": "#b38f58", "ink": "#22303f"}, {"id": "mart", "product": "Point of Sale", "biz": "Adom Mart", "desc": "Fast checkout, live stock and customer credit for mini-marts.", "accent": "#e1612a", "ink": "#17332e"}, {"id": "micro", "product": "Microfinance Manager", "biz": "Nkosuo Microfinance", "desc": "Susu, savings, investments and loans, open even when the network is down.", "accent": "#e9b028", "ink": "#0b3d2e"}, {"id": "pharmacy", "product": "Pharmacy Manager", "biz": "Healthway Pharmacy", "desc": "Dispensing, batch expiry tracking and low-stock alerts.", "accent": "#d34948", "ink": "#14472f"}, {"id": "shop", "product": "Supermarket POS", "biz": "Sample Supermarket", "desc": "Checkout, cashiers, stock across stores and a full SME ledger.", "accent": "#ba382b", "ink": "#1a2e4a"}, {"id": "sms", "product": "School Management System", "biz": "Bright Future Academy", "desc": "Fees, attendance, results and messages to parents.", "accent": "#c0943a", "ink": "#17264a"}, {"id": "transport", "product": "Transport Operator Manager", "biz": "SwiftLine Transport", "desc": "Seat booking, tickets, trips and passenger manifests at the station.", "accent": "#f0bf2b", "ink": "#11222b"}];
+  const T_ID = x => 't-' + x.id;
+  const grid = document.getElementById('tplGrid'), tplPage = document.getElementById('templates'), tplBtn = document.getElementById('tplBtn'), reel = document.getElementById('tplReel');
+  grid.innerHTML = TEMPLATES.map((x, i) => `<article class="tile" style="--acc:${x.accent};--ink:${x.ink};--d:${(i % 4) * 0.07}s">
+    <div class="shot"><span class="num">${String(i + 1).padStart(2, '0')}</span><img src="assets/templates/${x.id}.jpg" alt="${x.product} sample screen" loading="lazy" width="800" height="500"></div>
+    <div class="body"><h2>${x.product}</h2><div class="biz">Sample: ${x.biz}</div><p>${x.desc}</p>
+    <div class="acts"><a class="go" href="#${T_ID(x)}">Open here</a><a href="../${x.id}/" target="_blank" rel="noopener">Open on its own</a></div></div></article>`).join('');
+  // tiles float in as they scroll into view
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {root: tplPage, threshold: .12}) : null;
+  grid.querySelectorAll('.tile').forEach(t => io ? io.observe(t) : t.classList.add('in'));
+  // the template apps open in the same in-page frames as the tools
+  TEMPLATES.forEach(x => TOOLS_ALL.push({id: T_ID(x), name: x.product, url: '../' + x.id + '/', template: true}));
   const frames = {};
   function frameFor(t) {
     if (frames[t.id]) return frames[t.id];
@@ -152,16 +261,20 @@
   }
   function show() {
     const id = decodeURIComponent(location.hash.slice(1)).toLowerCase();
-    const t = TOOLS.find(x => x.id === id);
-    home.hidden = !!t;
+    const t = TOOLS_ALL.find(x => x.id === id), onTpl = id === 'templates';
+    home.hidden = !!t || onTpl; tplPage.hidden = !onTpl;
     Object.values(frames).forEach(b => b.classList.remove('on'));
     TOOLS.forEach(x => document.getElementById('tab-' + x.id).setAttribute('aria-selected', String(!!t && x.id === t.id)));
+    if (onTpl || (t && t.template)) tplBtn.setAttribute('aria-current', 'page'); else tplBtn.removeAttribute('aria-current');
+    const calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (calm) reel.controls = true;
+    if (onTpl && !calm) { try { reel.play().catch(() => { reel.controls = true; }); } catch (e) {} } else reel.pause();
     if (t) {
       frameFor(t).classList.add('on');
       own.href = t.url; own.hidden = false;
       document.title = t.name + ' · NYANSATEK Resources';
-      document.getElementById('tab-' + t.id).scrollIntoView({block: 'nearest', inline: 'nearest'});
-    } else { own.hidden = true; document.title = 'NYANSATEK Resources'; }
+      if (!t.template) document.getElementById('tab-' + t.id).scrollIntoView({block: 'nearest', inline: 'nearest'});
+    } else { own.hidden = true; document.title = onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
   }
   // arrow keys move between tabs
   tabs.addEventListener('keydown', e => {
