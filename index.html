@@ -18,7 +18,7 @@
     font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
   a { color: inherit; }
 
-  /* top bar: brand, tabs, open-in-own-window */
+  /* top bar: brand, tabs */
   header { position: fixed; inset: 0 0 auto 0; height: var(--bar); z-index: 5;
     display: flex; align-items: center; gap: 10px; padding: 0 12px;
     background: var(--panel); border-bottom: 1px solid var(--line); }
@@ -161,20 +161,16 @@
     <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="2.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="2.5" width="6" height="6" rx="1.5"/><rect x="2.5" y="11.5" width="6" height="6" rx="1.5"/><rect x="11.5" y="11.5" width="6" height="6" rx="1.5"/></svg>
     <span>TEMPLATE<span class="lbl2"> APPS</span></span>
   </a>
-  <a class="own" id="own" target="_blank" rel="noopener" hidden title="Open this tool on its own, full screen, where it can also be installed as an app">
-    <span class="lbl">Open on its own</span>
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 2.5h4.5V7M13.5 2.5L7 9M11.5 9.5v4h-9v-9h4"/></svg>
-  </a>
 </header>
 
 <main>
   <section id="home" aria-labelledby="hT">
     <div class="wrap">
       <h1 id="hT">NYANSATEK Resources</h1>
-      <p class="lede">Every NYANSATEK tool in one place. Pick a tab to use a tool right here, or open it on its own to install it as an app on your phone or computer.</p>
+      <p class="lede">Every NYANSATEK tool in one place. Pick a tab to use a tool right here.</p>
       <a class="tpl-promo" href="#templates"><svg class="nt-logo" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="none" stroke="#D9A833" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 32C32 21 24 15 18 20C12 25 15 34 24 34C29 34 32 31 32 32C32 40 40 47 46 43"/><path d="M32 32C32 21 40 15 46 20C52 25 49 34 40 34C36.4 34 33.6 32.6 32.4 30.8M30.2 33.6C27 39 20 45 18 43"/></g></svg><div><b>TEMPLATE APPS</b><span>12 ready-made business systems: school, clinic, church, hotel, shop, transport and more.</span></div><span class="arr" aria-hidden="true">&rarr;</span></a>
       <div class="grid" id="cards"></div>
-      <p class="foot">Your work stays on your own device. Each tool keeps its own saved files, whether you open it here or on its own. PeopleDesk is the exception: it signs you in and keeps your organization&rsquo;s records online so your team can share them. POS, School and Gold are here for training: they are the live systems, so practise with sample data and sign in with a training account, not a real shop, school or dealership account.</p>
+      <p class="foot">Your work stays on your own device. Each tool keeps its own saved files. PeopleDesk is the exception: it signs you in and keeps your organization&rsquo;s records online so your team can share them. POS, School and Gold are here for training: they are the live systems, so practise with sample data and sign in with a training account, not a real shop, school or dealership account.</p>
     </div>
   </section>
   <section id="templates" hidden aria-labelledby="tplT">
@@ -224,10 +220,10 @@
   const studioIcon = '<svg viewBox="0 0 48 48" class="ic" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#f2b233"/><text x="24" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800" font-size="24" fill="#241a00">N</text></svg>';
   const iconHtml = (t, cls) => t.icon ? `<img src="${t.icon}" alt="" class="${cls}" width="48" height="48">` : studioIcon.replace('class="ic"', `class="${cls}"`);
 
-  const tabs = document.getElementById('tabs'), main = document.querySelector('main'), home = document.getElementById('home'), own = document.getElementById('own');
+  const tabs = document.getElementById('tabs'), main = document.querySelector('main'), home = document.getElementById('home');
   tabs.innerHTML = TOOLS.map(t => `<a role="tab" href="#${t.id}" id="tab-${t.id}" aria-selected="false" aria-controls="frame-${t.id}">${iconHtml(t, '')}${t.name}</a>`).join('');
   document.getElementById('cards').innerHTML = TOOLS.map(t => `<article class="card">${iconHtml(t, 'ic')}<h2>${t.name}${t.training ? '<span class="tag">Training</span>' : ''}</h2><p>${t.blurb}</p>
-    <div class="acts"><a class="go" href="#${t.id}">Open here</a><a href="${t.url}" target="_blank" rel="noopener">Open on its own</a></div></article>`).join('');
+    <div class="acts"><a class="go" href="#${t.id}">Open</a></div></article>`).join('');
 
   const TOOLS_ALL = TOOLS.slice();
 
@@ -238,7 +234,7 @@
   grid.innerHTML = TEMPLATES.map((x, i) => `<article class="tile" style="--acc:${x.accent};--ink:${x.ink};--d:${(i % 4) * 0.07}s">
     <div class="shot"><span class="num">${String(i + 1).padStart(2, '0')}</span><img src="assets/templates/${x.id}.jpg" alt="${x.product} sample screen" loading="lazy" width="800" height="500"></div>
     <div class="body"><h2>${x.product}</h2><div class="biz">Sample: ${x.biz}</div><p>${x.desc}</p>
-    <div class="acts"><a class="go" href="#${T_ID(x)}">Open here</a><a href="../${x.id}/" target="_blank" rel="noopener">Open on its own</a></div></div></article>`).join('');
+    <div class="acts"><a class="go" href="#${T_ID(x)}">Open</a></div></div></article>`).join('');
   // tiles float in as they scroll into view
   const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), {root: tplPage, threshold: .12}) : null;
   grid.querySelectorAll('.tile').forEach(t => io ? io.observe(t) : t.classList.add('in'));
@@ -271,10 +267,9 @@
     if (onTpl && !calm) { try { reel.play().catch(() => { reel.controls = true; }); } catch (e) {} } else reel.pause();
     if (t) {
       frameFor(t).classList.add('on');
-      own.href = t.url; own.hidden = false;
       document.title = t.name + ' · NYANSATEK Resources';
       if (!t.template) document.getElementById('tab-' + t.id).scrollIntoView({block: 'nearest', inline: 'nearest'});
-    } else { own.hidden = true; document.title = onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
+    } else { document.title = onTpl ? 'Template Apps · NYANSATEK Resources' : 'NYANSATEK Resources'; }
   }
   // arrow keys move between tabs
   tabs.addEventListener('keydown', e => {
