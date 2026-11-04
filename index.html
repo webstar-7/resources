@@ -6,7 +6,13 @@
 <title>NYANSATEK Resources</title>
 <meta name="description" content="NYANSATEK tools in one place: Passport photos, full-body photos, video editing, graphic design, beat making and HR management, POS, School and Gold for training, plus 12 template business apps.">
 <meta name="theme-color" content="#0b101b">
-<link rel="icon" href="../passport/icon-192.png" type="image/png">
+<link rel="icon" href="assets/app/favicon-64.png" type="image/png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="NYANSATEK">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <style>
   :root {
     --bg: #0b101b; --panel: #121a2a; --panel2: #18223a; --line: #26324d;
@@ -278,6 +284,28 @@ body.locked header, body.locked main { display: none; }
   .ac-map { height: 300px; }
 }
 @media (max-width: 640px) { .act-btn span { display: none; } .act-btn { padding: 0 9px; } }
+
+/* install as an app */
+#inst { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 40; max-width: 460px; margin: 0 auto;
+  display: flex; gap: 12px; align-items: center; background: var(--panel); border: 1px solid #5c4a12; border-radius: 14px; padding: 12px 12px 12px 14px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.55); }
+#inst[hidden] { display: none; }
+#inst img { width: 44px; height: 44px; border-radius: 11px; flex: none; }
+#inst .tx { flex: 1; min-width: 0; font-size: 14px; }
+#inst .tx b { display: block; font-size: 15px; }
+#inst .tx span { color: var(--mute); }
+#inst .go { flex: none; min-height: 40px; padding: 0 14px; border: 0; border-radius: 10px; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer;
+  color: var(--goldink); background: linear-gradient(135deg, #f2c14e, #d4a017); }
+#inst .x { flex: none; width: 36px; height: 36px; border: 0; background: none; color: var(--mute); font-size: 22px; line-height: 1; cursor: pointer; border-radius: 8px; }
+#inst .x:hover { background: var(--panel2); color: var(--text); }
+#iosHow { position: fixed; inset: 0; z-index: 60; background: rgba(5,8,14,.72); display: grid; place-items: end center; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+#iosHow[hidden] { display: none; }
+#iosHow .sh { width: 100%; max-width: 420px; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 18px 16px; }
+#iosHow h2 { font-size: 18px; margin: 0 0 12px; }
+#iosHow ol { margin: 0 0 16px; padding-left: 22px; color: #c4cbd8; }
+#iosHow li { margin: 0 0 10px; }
+#iosHow li svg { width: 18px; height: 18px; vertical-align: -3px; color: #7cc0ff; }
+body.locked #inst { display: none; }
 </style>
 </head>
 <body class="locked">
@@ -304,7 +332,7 @@ body.locked header, body.locked main { display: none; }
   </a>
   <a class="act-btn" id="actBtn" href="#activity" title="Log your visits and activities"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18s-5.5-5.2-5.5-9.3a5.5 5.5 0 0111 0C15.5 12.8 10 18 10 18z"/><circle cx="10" cy="8.6" r="2"/></svg><span>Activity</span></a>
   <div class="me" id="me"><button type="button" id="meBtn" aria-haspopup="true" aria-expanded="false"><span class="av" id="meAv">?</span><span class="mn" id="meName"></span></button>
-    <div class="menu" id="meMenu" hidden><div class="who" id="meWho"></div><a href="#activity">Activity log</a><a href="#staff" id="meStaff" hidden>Manage staff</a><a href="#">All tools</a><button type="button" id="meOut">Sign out</button></div></div>
+    <div class="menu" id="meMenu" hidden><div class="who" id="meWho"></div><a href="#activity">Activity log</a><button type="button" id="meInstall" hidden>Install app on this device</button><a href="#staff" id="meStaff" hidden>Manage staff</a><a href="#">All tools</a><button type="button" id="meOut">Sign out</button></div></div>
 </header>
 
 <main>
@@ -493,6 +521,24 @@ body.locked header, body.locked main { display: none; }
   };
 })();
 </script>
+<div id="inst" role="dialog" aria-label="Install the app" hidden>
+  <img src="assets/app/icon-192.png" alt="">
+  <div class="tx"><b>Get the NYANSATEK app</b><span>Open the portal straight from your home screen.</span></div>
+  <button type="button" class="go" id="instGo">Install</button>
+  <button type="button" class="x" id="instX" aria-label="Not now">&times;</button>
+</div>
+<div id="iosHow" role="dialog" aria-modal="true" aria-labelledby="iosT" hidden>
+  <div class="sh">
+    <h2 id="iosT">Add NYANSATEK to your home screen</h2>
+    <ol>
+      <li>Tap the <b>Share</b> button <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13V2.5M6.5 6 10 2.5 13.5 6"/><path d="M6 9H4.5v8.5h11V9H14"/></svg> at the bottom (or top) of Safari.</li>
+      <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+      <li>Tap <b>Add</b>. Open NYANSATEK from your home screen from now on.</li>
+    </ol>
+    <p class="gnote" style="text-align:left;margin:0 0 14px">Use Safari for this step: Chrome on iPhone may not show “Add to Home Screen”.</p>
+    <button type="button" class="btnp" id="iosOk">Got it</button>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 (() => {
@@ -525,6 +571,7 @@ body.locked header, body.locked main { display: none; }
     $('meStaff').hidden = !window.NT_ADMIN;
     if (!started) { started = true; window.NT_APP.start(); } else window.NT_APP.show();
     clearInterval(timer); timer = setInterval(check, RECHECK_MS);
+    refreshInstallUI();
   }
   // ask the server whether this person may still use Resources
   async function check() {
@@ -761,6 +808,35 @@ body.locked header, body.locked main { display: none; }
     const blob = new Blob(['﻿' + lines.map(l => l.map(cell).join(',')).join('\r\n')], { type: 'text/csv' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `activity-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
+
+  // ---------- install as an app ----------
+  const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+  let deferred = null;
+  const canInstall = () => !standalone() && (deferred || isIOS);
+  function refreshInstallUI() {
+    $('meInstall').hidden = !canInstall();
+    const snoozed = Number(store.get('nt-install-snooze') || 0) > Date.now();
+    $('inst').hidden = !(me && canInstall() && !snoozed);
+    $('instGo').textContent = deferred ? 'Install' : 'How to';
+  }
+  async function doInstall() {
+    if (deferred) {
+      deferred.prompt();
+      const r = await deferred.userChoice.catch(() => null); deferred = null;
+      if (r && r.outcome === 'dismissed') store.set('nt-install-snooze', String(Date.now() + 3 * 864e5));
+      refreshInstallUI();
+    } else if (isIOS) { $('iosHow').hidden = false; $('iosOk').focus(); }
+  }
+  addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; refreshInstallUI(); });
+  addEventListener('appinstalled', () => { deferred = null; refreshInstallUI(); });
+  $('instGo').addEventListener('click', doInstall);
+  $('meInstall').addEventListener('click', () => { $('meMenu').hidden = true; doInstall(); });
+  $('instX').addEventListener('click', () => { store.set('nt-install-snooze', String(Date.now() + 7 * 864e5)); refreshInstallUI(); });
+  $('iosOk').addEventListener('click', () => { $('iosHow').hidden = true; store.set('nt-install-snooze', String(Date.now() + 7 * 864e5)); refreshInstallUI(); });
+  $('iosHow').addEventListener('click', e => { if (e.target.id === 'iosHow') $('iosHow').hidden = true; });
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
   // start
   if (!window.supabase || !window.supabase.createClient) {
